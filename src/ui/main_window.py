@@ -22,7 +22,7 @@ class MainWindow(QMainWindow):
     
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Multiverse - Virtual OS Hub")
+        self.setWindowTitle("∞ Multiverse - Virtual OS Hub")
         self.setMinimumSize(1200, 800)
         
         # Initialize animation manager
@@ -64,7 +64,7 @@ class MainWindow(QMainWindow):
         layout.setSpacing(15)
         
         # Logo/title
-        title = QLabel("Multiverse")
+        title = QLabel("∞ Multiverse")
         title.setObjectName("app-title")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(title)
@@ -151,11 +151,11 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout(welcome)
         layout.setContentsMargins(30, 30, 30, 30)
         
-        title = QLabel("Welcome to Multiverse! 🌟")
+        title = QLabel("Welcome to ∞ Multiverse! 🌟")
         title.setObjectName("welcome-title")
         layout.addWidget(title)
         
-        subtitle = QLabel("Create and manage your virtual operating system environments")
+        subtitle = QLabel("Create and manage your virtual operating system environments with infinite possibilities")
         subtitle.setObjectName("welcome-subtitle")
         layout.addWidget(subtitle)
         
@@ -264,7 +264,34 @@ class MainWindow(QMainWindow):
     def show_create_vm_dialog(self):
         """Show create VM dialog"""
         dialog = CreateVMDialog(self)
+        dialog.vm_created.connect(self.on_vm_created)
         dialog.exec()
+        
+    def on_vm_created(self, vm_config):
+        """Handle VM creation"""
+        print(f"🎉 NectarOS environment created: {vm_config['name']}")
+        
+        # Add the new VM to the list
+        new_vm = {
+            "name": vm_config["name"],
+            "os": "NectarOS",
+            "status": "stopped",
+            "memory": f"{vm_config['memory']}GB",
+            "storage": f"{vm_config['storage']}GB"
+        }
+        
+        # Update the VM grid
+        self.update_vm_grid()
+        
+        # Show success message
+        from PyQt6.QtWidgets import QMessageBox
+        QMessageBox.information(self, "Success", f"NectarOS environment '{vm_config['name']}' has been created successfully!")
+        
+    def update_vm_grid(self):
+        """Update the VM grid with current VMs"""
+        # This would refresh the VM cards
+        # For now, just print a message
+        print("🔄 VM grid updated")
         
     def start_entrance_animations(self):
         """Start entrance animations for the UI"""

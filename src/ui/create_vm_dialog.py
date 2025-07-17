@@ -31,26 +31,27 @@ class CreateVMDialog(QDialog):
         layout.setSpacing(20)
         
         # Title
-        title = QLabel("Create New Virtual Machine")
+        title = QLabel("Prepare NectarOS Environment")
         title.setObjectName("dialog-title")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(title)
         
         # VM Configuration Form
-        form_group = QGroupBox("Virtual Machine Configuration")
+        form_group = QGroupBox("NectarOS Configuration")
         form_group.setObjectName("form-group")
         form_layout = QFormLayout(form_group)
         
         # VM Name
         self.name_edit = QLineEdit()
-        self.name_edit.setPlaceholderText("Enter VM name (e.g., My NectarOS)")
+        self.name_edit.setPlaceholderText("Enter environment name (e.g., My NectarOS)")
         self.name_edit.setObjectName("form-input")
-        form_layout.addRow("VM Name:", self.name_edit)
+        form_layout.addRow("Environment Name:", self.name_edit)
         
         # OS Template
         self.os_combo = QComboBox()
-        self.os_combo.addItems(["NectarOS (Recommended)", "Custom Template"])
+        self.os_combo.addItems(["NectarOS (Recommended)"])
         self.os_combo.setObjectName("form-combo")
+        self.os_combo.setEnabled(False)  # Disable since we only have NectarOS
         form_layout.addRow("OS Template:", self.os_combo)
         
         # Memory
@@ -82,6 +83,12 @@ class CreateVMDialog(QDialog):
         features_group = QGroupBox("NectarOS Features")
         features_group.setObjectName("form-group")
         features_layout = QVBoxLayout(features_group)
+        
+        # Add feature description
+        feature_desc = QLabel("NectarOS provides a clean, dark-themed environment with essential applications for productivity and development.")
+        feature_desc.setObjectName("feature-description")
+        feature_desc.setWordWrap(True)
+        features_layout.addWidget(feature_desc)
         
         # Feature checkboxes
         self.frosted_glass = QCheckBox("Enable Frosted Glass Effects")
@@ -124,7 +131,7 @@ class CreateVMDialog(QDialog):
         
         buttons_layout.addStretch()
         
-        create_btn = QPushButton("Create Virtual Machine")
+        create_btn = QPushButton("Continue to NectarOS")
         create_btn.setObjectName("dialog-button-create")
         create_btn.clicked.connect(self.create_vm)
         buttons_layout.addWidget(create_btn)
@@ -209,6 +216,13 @@ class CreateVMDialog(QDialog):
             border-color: #4a9eff;
         }
         
+        #feature-description {
+            color: #b0b0b0;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+        
         #dialog-button-cancel {
             background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                 stop:0 #3a3a3a, stop:1 #2a2a2a);
@@ -247,22 +261,24 @@ class CreateVMDialog(QDialog):
     def create_vm(self):
         """Create the virtual machine with current settings"""
         if not self.name_edit.text().strip():
-            # TODO: Show error message
+            from PyQt6.QtWidgets import QMessageBox
+            QMessageBox.warning(self, "Error", "Please enter an environment name.")
             return
             
         vm_config = {
             "name": self.name_edit.text().strip(),
-            "os_template": self.os_combo.currentText(),
+            "os_template": "NectarOS",
             "memory": self.memory_spin.value(),
             "storage": self.storage_spin.value(),
             "cpu_cores": self.cpu_spin.value(),
             "description": self.desc_edit.toPlainText(),
             "features": {
-                "frosted_glass": self.frosted_glass.isChecked(),
-                "animations": self.animations.isChecked(),
+                "simple_ui": True,
+                "dark_theme": True,
                 "essential_apps": self.essential_apps.isChecked()
             }
         }
         
+        print(f"✅ Creating NectarOS environment: {vm_config['name']}")
         self.vm_created.emit(vm_config)
         self.accept() 
