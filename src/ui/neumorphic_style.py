@@ -1,6 +1,6 @@
 """
 Neumorphic styling for Multiverse application
-Dark theme with soft shadows and depth effects
+Dark theme with soft shadows and depth effects (PyQt6 compatible)
 """
 
 class NeumorphicStyle:
@@ -26,22 +26,19 @@ class NeumorphicStyle:
         }
         
     def get_main_window_style(self):
-        """Get the main window stylesheet"""
+        """Get the main window stylesheet (PyQt6 compatible)"""
         return f"""
         QMainWindow {{
             background-color: {self.colors['bg_primary']};
             color: {self.colors['text_primary']};
-            font-family: 'Segoe UI', 'SF Pro Display', 'Ubuntu', sans-serif;
+            font-family: 'SF Pro Display', 'Ubuntu', 'Segoe UI', sans-serif;
         }}
         
         /* Sidebar */
         #sidebar {{
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                stop:0 {self.colors['bg_secondary']}, stop:1 {self.colors['bg_tertiary']});
-            border-right: 1px solid {self.colors['border']};
-            border-radius: 15px;
-            margin: 10px;
-            padding: 10px;
+            background-color: {self.colors['bg_secondary']};
+            border-right: 2px solid {self.colors['border']};
+            border-radius: 0px;
         }}
         
         #app-title {{
@@ -53,10 +50,9 @@ class NeumorphicStyle:
         }}
         
         #nav-button {{
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                stop:0 {self.colors['bg_tertiary']}, stop:1 {self.colors['bg_secondary']});
+            background-color: {self.colors['bg_tertiary']};
             border: 1px solid {self.colors['border']};
-            border-radius: 10px;
+            border-radius: 8px;
             padding: 12px 15px;
             margin: 5px 0;
             color: {self.colors['text_primary']};
@@ -66,22 +62,20 @@ class NeumorphicStyle:
         }}
         
         #nav-button:hover {{
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                stop:0 {self.colors['accent']}, stop:1 {self.colors['accent_hover']});
+            background-color: {self.colors['accent']};
             border-color: {self.colors['accent']};
             color: white;
         }}
         
         #nav-button:pressed {{
-            background: {self.colors['accent']};
+            background-color: {self.colors['accent_hover']};
             border-color: {self.colors['accent_hover']};
         }}
         
         #create-vm-button {{
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                stop:0 {self.colors['success']}, stop:1 #3ade70);
+            background-color: {self.colors['success']};
             border: none;
-            border-radius: 12px;
+            border-radius: 8px;
             padding: 15px;
             margin: 10px 0;
             color: white;
@@ -90,15 +84,13 @@ class NeumorphicStyle:
         }}
         
         #create-vm-button:hover {{
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                stop:0 #5aee90, stop:1 #4ade80);
+            background-color: #5aee90;
         }}
         
         /* Content Area */
         #content-area {{
-            background: {self.colors['bg_primary']};
-            border-radius: 15px;
-            margin: 10px;
+            background-color: {self.colors['bg_primary']};
+            border-radius: 0px;
         }}
         
         #content-header {{
@@ -109,22 +101,20 @@ class NeumorphicStyle:
         }}
         
         #content-scroll {{
-            background: transparent;
+            background-color: transparent;
             border: none;
         }}
         
         #content-scroll QWidget {{
-            background: transparent;
+            background-color: transparent;
         }}
         
         /* Welcome Section */
         #welcome-section {{
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                stop:0 {self.colors['bg_secondary']}, stop:1 {self.colors['bg_tertiary']});
+            background-color: {self.colors['bg_secondary']};
             border: 1px solid {self.colors['border']};
-            border-radius: 20px;
-            box-shadow: 5px 5px 15px {self.colors['shadow_dark']},
-                        -5px -5px 15px {self.colors['shadow_light']};
+            border-radius: 12px;
+            padding: 20px;
         }}
         
         #welcome-title {{
@@ -142,19 +132,16 @@ class NeumorphicStyle:
         
         /* Quick Actions */
         #quick-actions {{
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                stop:0 {self.colors['bg_secondary']}, stop:1 {self.colors['bg_tertiary']});
+            background-color: {self.colors['bg_secondary']};
             border: 1px solid {self.colors['border']};
-            border-radius: 15px;
-            box-shadow: 3px 3px 10px {self.colors['shadow_dark']},
-                        -3px -3px 10px {self.colors['shadow_light']};
+            border-radius: 12px;
+            padding: 20px;
         }}
         
         #quick-action-button {{
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                stop:0 {self.colors['bg_tertiary']}, stop:1 {self.colors['bg_secondary']});
+            background-color: {self.colors['bg_tertiary']};
             border: 1px solid {self.colors['border']};
-            border-radius: 12px;
+            border-radius: 8px;
             padding: 15px;
             color: {self.colors['text_primary']};
             font-size: 14px;
@@ -163,20 +150,17 @@ class NeumorphicStyle:
         }}
         
         #quick-action-button:hover {{
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                stop:0 {self.colors['accent']}, stop:1 {self.colors['accent_hover']});
+            background-color: {self.colors['accent']};
             border-color: {self.colors['accent']};
             color: white;
         }}
         
         /* VM Section */
         #vm-section {{
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                stop:0 {self.colors['bg_secondary']}, stop:1 {self.colors['bg_tertiary']});
+            background-color: {self.colors['bg_secondary']};
             border: 1px solid {self.colors['border']};
-            border-radius: 15px;
-            box-shadow: 3px 3px 10px {self.colors['shadow_dark']},
-                        -3px -3px 10px {self.colors['shadow_light']};
+            border-radius: 12px;
+            padding: 20px;
         }}
         
         #section-title {{
@@ -188,22 +172,109 @@ class NeumorphicStyle:
         
         /* Scrollbar Styling */
         QScrollBar:vertical {{
-            background: {self.colors['bg_secondary']};
+            background-color: {self.colors['bg_secondary']};
             width: 12px;
             border-radius: 6px;
         }}
         
         QScrollBar::handle:vertical {{
-            background: {self.colors['border']};
+            background-color: {self.colors['border']};
             border-radius: 6px;
             min-height: 20px;
         }}
         
         QScrollBar::handle:vertical:hover {{
-            background: {self.colors['accent']};
+            background-color: {self.colors['accent']};
         }}
         
         QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{
             height: 0px;
+        }}
+        
+        /* VM Card Styling */
+        #vm-card {{
+            background-color: {self.colors['bg_tertiary']};
+            border: 1px solid {self.colors['border']};
+            border-radius: 12px;
+            padding: 15px;
+        }}
+        
+        #vm-card:hover {{
+            border-color: {self.colors['accent']};
+        }}
+        
+        #vm-name {{
+            font-size: 18px;
+            font-weight: bold;
+            color: {self.colors['text_primary']};
+        }}
+        
+        #vm-os {{
+            font-size: 14px;
+            color: {self.colors['text_secondary']};
+        }}
+        
+        #vm-resource {{
+            font-size: 12px;
+            color: {self.colors['text_muted']};
+        }}
+        
+        #vm-status-running {{
+            color: {self.colors['success']};
+            font-weight: bold;
+            font-size: 12px;
+        }}
+        
+        #vm-status-stopped {{
+            color: {self.colors['error']};
+            font-weight: bold;
+            font-size: 12px;
+        }}
+        
+        #vm-status-paused {{
+            color: {self.colors['warning']};
+            font-weight: bold;
+            font-size: 12px;
+        }}
+        
+        #vm-progress {{
+            background-color: {self.colors['bg_primary']};
+            border: 1px solid {self.colors['border']};
+            border-radius: 8px;
+            text-align: center;
+            color: {self.colors['text_primary']};
+        }}
+        
+        #vm-progress::chunk {{
+            background-color: {self.colors['accent']};
+            border-radius: 7px;
+        }}
+        
+        #vm-start-button, #vm-stop-button, #vm-settings-button {{
+            background-color: {self.colors['bg_secondary']};
+            border: 1px solid {self.colors['border']};
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: {self.colors['text_primary']};
+            font-size: 12px;
+            font-weight: 500;
+        }}
+        
+        #vm-start-button:hover {{
+            background-color: {self.colors['success']};
+            border-color: {self.colors['success']};
+            color: white;
+        }}
+        
+        #vm-stop-button:hover {{
+            background-color: {self.colors['error']};
+            border-color: {self.colors['error']};
+            color: white;
+        }}
+        
+        #vm-settings-button:hover {{
+            background-color: {self.colors['accent']};
+            border-color: {self.colors['accent']};
+            color: white;
         }}
         """ 

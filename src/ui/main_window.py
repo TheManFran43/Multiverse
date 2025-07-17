@@ -91,9 +91,8 @@ class MainWindow(QMainWindow):
         create_btn.setObjectName("create-vm-button")
         create_btn.clicked.connect(self.show_create_vm_dialog)
         
-        # Add hover animation
-        create_btn.enterEvent = lambda e: self.animation_manager.spring_scale(create_btn, 1.02, 200)
-        create_btn.leaveEvent = lambda e: self.animation_manager.spring_scale(create_btn, 1.0, 200)
+        # Add click handler
+        create_btn.clicked.connect(self.show_create_vm_dialog)
         
         layout.addWidget(create_btn)
         
@@ -117,10 +116,12 @@ class MainWindow(QMainWindow):
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setObjectName("content-scroll")
+        scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         
         scroll_content = QWidget()
         scroll_layout = QVBoxLayout(scroll_content)
-        scroll_layout.setContentsMargins(0, 0, 0, 0)
+        scroll_layout.setContentsMargins(20, 20, 20, 20)
         scroll_layout.setSpacing(20)
         
         # Welcome section
@@ -243,7 +244,22 @@ class MainWindow(QMainWindow):
     def navigate_to(self, section):
         """Navigate to different sections"""
         print(f"Navigating to: {section}")
-        # TODO: Implement navigation logic
+        
+        # Update content header
+        header = self.findChild(QLabel, "content-header")
+        if header:
+            if section == "dashboard":
+                header.setText("Dashboard")
+            elif section == "vms":
+                header.setText("Virtual Machines")
+            elif section == "templates":
+                header.setText("OS Templates")
+            elif section == "settings":
+                header.setText("Settings")
+            elif section == "help":
+                header.setText("Help")
+                
+        # TODO: Implement full navigation logic with stacked widget
         
     def show_create_vm_dialog(self):
         """Show create VM dialog"""
@@ -252,37 +268,25 @@ class MainWindow(QMainWindow):
         
     def start_entrance_animations(self):
         """Start entrance animations for the UI"""
-        # Fade in the main window
+        # Simple fade in
         self.setWindowOpacity(0.0)
-        self.animation_manager.fade_in(self, 800)
-        
-        # Stagger animate sidebar buttons
-        sidebar = self.findChild(QFrame, "sidebar")
-        if sidebar:
-            self.animation_manager.stagger_children(sidebar, "slide_in", 150)
-            
-        # Animate welcome section
-        welcome = self.findChild(QFrame, "welcome-section")
-        if welcome:
-            QTimer.singleShot(300, lambda: self.animation_manager.slide_in(welcome, "up", 600))
-            
-        # Animate quick actions
-        actions = self.findChild(QFrame, "quick-actions")
-        if actions:
-            QTimer.singleShot(500, lambda: self.animation_manager.slide_in(actions, "up", 600))
-            
-        # Animate VM section
-        vm_section = self.findChild(QFrame, "vm-section")
-        if vm_section:
-            QTimer.singleShot(700, lambda: self.animation_manager.slide_in(vm_section, "up", 600))
+        QTimer.singleShot(100, lambda: self.setWindowOpacity(1.0))
             
     def handle_quick_action(self, action):
         """Handle quick action button clicks"""
         print(f"Quick action: {action}")
         
-        # Add bounce animation to the clicked button
+        # Simple button feedback
         sender = self.sender()
         if sender:
-            self.animation_manager.bounce(sender, 0.1, 400)
+            print(f"Button clicked: {sender.text()}")
             
-        # TODO: Implement quick actions 
+        # Implement quick actions
+        if action == "launch-nectaros":
+            self.show_create_vm_dialog()
+        elif action == "install-template":
+            print("📦 Template installation dialog would open here")
+        elif action == "vm-settings":
+            print("⚙️ VM settings dialog would open here")
+        elif action == "system-monitor":
+            print("📊 System monitor would open here") 

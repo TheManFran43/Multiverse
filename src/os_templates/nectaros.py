@@ -16,14 +16,11 @@ class NectarOSTemplate:
         self.version = "1.0.0"
         self.description = "A beautiful fusion of macOS Tahoe, Windows Vista, and OneUI 7 aesthetics"
         
-        # Design specifications
+        # Design specifications (simplified)
         self.design_features = {
-            "frosted_glass": True,
-            "animations": True,
-            "rounded_corners": True,
-            "gradient_backgrounds": True,
-            "soft_shadows": True,
-            "transparency_effects": True
+            "simple_ui": True,
+            "dark_theme": True,
+            "clean_layout": True
         }
         
         # Color palette inspired by the three OS designs
@@ -234,17 +231,17 @@ echo "   - Essential applications"
         return """
 🌺 Welcome to NectarOS! 🌺
 
-You're now experiencing a beautiful fusion of:
-• macOS Tahoe's elegance
-• Windows Vista's Aero Glass
-• OneUI 7's modern design
+A simple, clean virtual environment with:
+• Dark theme
+• Essential applications
+• Clean interface
+• Easy navigation
 
 Features available:
-✅ Frosted glass effects
-✅ Smooth animations  
-✅ Rounded corners
-✅ Gradient backgrounds
+✅ Dark theme
 ✅ Essential applications
+✅ Clean layout
+✅ Simple navigation
 
 Enjoy your new virtual environment!
         """ 

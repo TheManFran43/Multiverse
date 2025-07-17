@@ -202,24 +202,23 @@ class VMCard(QFrame):
         
     def setup_animations(self):
         """Setup hover and click animations"""
-        # Add hover effect
-        self.enterEvent = self.on_enter
-        self.leaveEvent = self.on_leave
-        
-        # Add click animations to buttons
+        # Add click handlers to buttons
         for button in self.findChildren(QPushButton):
             button.clicked.connect(self.on_button_click)
             
-    def on_enter(self, event):
-        """Handle mouse enter event"""
-        self.animation_manager.spring_scale(self, 1.02, 200)
-        
-    def on_leave(self, event):
-        """Handle mouse leave event"""
-        self.animation_manager.spring_scale(self, 1.0, 200)
-        
     def on_button_click(self):
-        """Handle button click with animation"""
+        """Handle button click"""
         sender = self.sender()
         if sender:
-            self.animation_manager.bounce(sender, 0.15, 300) 
+            button_text = sender.text()
+            vm_name = self.vm_data["name"]
+            
+            if "Start" in button_text:
+                print(f"🚀 Starting VM: {vm_name}")
+                self.start_clicked.emit(vm_name)
+            elif "Stop" in button_text:
+                print(f"⏹️ Stopping VM: {vm_name}")
+                self.stop_clicked.emit(vm_name)
+            elif "Settings" in button_text:
+                print(f"⚙️ Opening settings for VM: {vm_name}")
+                self.settings_clicked.emit(vm_name) 
