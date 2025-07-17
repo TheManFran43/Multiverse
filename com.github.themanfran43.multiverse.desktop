@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Multiverse
+Comment=Virtual OS Hub with dark neumorphic design
+Exec=multiverse
+Icon=com.github.themanfran43.multiverse
+Terminal=false
+Categories=System;Virtualization;
+Keywords=virtual;machine;vm;os;hub;multiverse;
+StartupWMClass=multiverse 

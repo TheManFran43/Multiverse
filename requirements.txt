@@ -1,8 +1,13 @@
+# Core dependencies (works on all platforms)
 PyQt6>=6.4.0
-libvirt-python>=8.0.0
-qemu-python>=1.0.0
 psutil>=5.9.0
 pillow>=9.0.0
 requests>=2.28.0
 pyyaml>=6.0
-click>=8.1.0 
+click>=8.1.0
+
+# Platform-specific dependencies (install manually if needed):
+# Linux only - for full VM functionality:
+#   sudo apt install libvirt-dev
+#   pip install libvirt-python>=8.0.0
+#   pip install qemu-python>=1.0.0 

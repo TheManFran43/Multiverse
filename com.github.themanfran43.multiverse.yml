@@ -1,0 +1,57 @@
+app-id: com.github.themanfran43.multiverse
+runtime: org.gnome.Platform
+runtime-version: '45'
+sdk: org.gnome.Sdk
+command: multiverse
+finish-args:
+  - --share=network
+  - --share=ipc
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --filesystem=home
+  - --device=dri
+  - --socket=pulseaudio
+  - --talk-name=org.freedesktop.NetworkManager
+modules:
+  - name: python3-pip
+    buildsystem: simple
+    build-commands:
+      - pip3 install --prefix=/app --no-deps --no-build-isolation PyQt6
+    sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/59/8/59.8MB/pyqt6-6.9.1-cp39-abi3-macosx_10_14_universal2.whl
+        sha256: 1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+  - name: multiverse
+    buildsystem: simple
+    build-commands:
+      - install -D main.py /app/bin/multiverse
+      - install -D demo.py /app/bin/multiverse-demo
+      - install -D test_app.py /app/bin/multiverse-test
+      - mkdir -p /app/lib/python3.12/site-packages/multiverse
+      - cp -r src/* /app/lib/python3.12/site-packages/multiverse/
+      - install -D resources/icons/multiverse.png /app/share/icons/hicolor/256x256/apps/com.github.themanfran43.multiverse.png
+      - install -D com.github.themanfran43.multiverse.desktop /app/share/applications/
+    sources:
+      - type: dir
+        path: .
+    modules:
+      - name: python-deps
+        buildsystem: simple
+        build-commands:
+          - pip3 install --prefix=/app --no-deps --no-build-isolation psutil pillow requests pyyaml click
+        sources:
+          - type: file
+            url: https://files.pythonhosted.org/packages/psutil-5.9.0.tar.gz
+            sha256: 1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+          - type: file
+            url: https://files.pythonhosted.org/packages/pillow-9.0.0.tar.gz
+            sha256: 1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+          - type: file
+            url: https://files.pythonhosted.org/packages/requests-2.28.0.tar.gz
+            sha256: 1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+          - type: file
+            url: https://files.pythonhosted.org/packages/pyyaml-6.0.tar.gz
+            sha256: 1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+          - type: file
+            url: https://files.pythonhosted.org/packages/click-8.1.0.tar.gz
+            sha256: 1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef 

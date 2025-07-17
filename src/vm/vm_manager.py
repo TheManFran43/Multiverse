@@ -9,7 +9,15 @@ from pathlib import Path
 from typing import Dict, List, Optional
 from datetime import datetime
 
-from ..os_templates.nectaros import NectarOSTemplate
+# Try to import libvirt, but don't fail if it's not available
+try:
+    import libvirt
+    LIBVIRT_AVAILABLE = True
+except ImportError:
+    LIBVIRT_AVAILABLE = False
+    print("⚠️  libvirt not available - using simulation mode")
+
+from os_templates.nectaros import NectarOSTemplate
 
 
 class VMManager:
@@ -34,6 +42,11 @@ class VMManager:
         self.templates = {
             "nectaros": NectarOSTemplate()
         }
+        
+        # Check if we're in simulation mode
+        self.simulation_mode = not LIBVIRT_AVAILABLE
+        if self.simulation_mode:
+            print("🎮 Running in simulation mode - VMs will be simulated")
         
     def load_vms(self) -> Dict[str, dict]:
         """Load existing VMs from storage"""
@@ -106,13 +119,21 @@ class VMManager:
             return False
             
         try:
-            # Update status
-            self.vms[vm_name]["status"] = "running"
-            self.vms[vm_name]["last_modified"] = datetime.now().isoformat()
-            self.save_vms()
-            
-            print(f"🚀 Started VM: {vm_name}")
-            return True
+            if self.simulation_mode:
+                # In simulation mode, just update status
+                print(f"🎮 Simulating VM start: {vm_name}")
+                self.vms[vm_name]["status"] = "running"
+                self.vms[vm_name]["last_modified"] = datetime.now().isoformat()
+                self.save_vms()
+                print(f"🚀 Started VM (simulation): {vm_name}")
+                return True
+            else:
+                # Real VM start logic would go here
+                self.vms[vm_name]["status"] = "running"
+                self.vms[vm_name]["last_modified"] = datetime.now().isoformat()
+                self.save_vms()
+                print(f"🚀 Started VM: {vm_name}")
+                return True
             
         except Exception as e:
             print(f"Error starting VM: {e}")
@@ -125,6 +146,9 @@ class VMManager:
             return False
             
         try:
+            if self.simulation_mode:
+                print(f"🎮 Simulating VM stop: {vm_name}")
+                
             # Update status
             self.vms[vm_name]["status"] = "stopped"
             self.vms[vm_name]["last_modified"] = datetime.now().isoformat()
@@ -182,4 +206,8 @@ class VMManager:
         if vm_name in self.vms:
             self.vms[vm_name]["status"] = status
             self.vms[vm_name]["last_modified"] = datetime.now().isoformat()
-            self.save_vms() 
+            self.save_vms()
+            
+    def is_simulation_mode(self) -> bool:
+        """Check if running in simulation mode"""
+        return self.simulation_mode 

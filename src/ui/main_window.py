@@ -8,12 +8,13 @@ from PyQt6.QtWidgets import (
     QPushButton, QLabel, QScrollArea, QFrame, QGridLayout,
     QStackedWidget, QSizePolicy
 )
-from PyQt6.QtCore import Qt, QSize, pyqtSignal
+from PyQt6.QtCore import Qt, QSize, pyqtSignal, QTimer
 from PyQt6.QtGui import QFont, QPalette, QColor, QPixmap
 
-from .vm_card import VMCard
-from .create_vm_dialog import CreateVMDialog
-from .neumorphic_style import NeumorphicStyle
+from ui.vm_card import VMCard
+from ui.create_vm_dialog import CreateVMDialog
+from ui.neumorphic_style import NeumorphicStyle
+from utils.animation_manager import AnimationManager
 
 
 class MainWindow(QMainWindow):
@@ -23,8 +24,15 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Multiverse - Virtual OS Hub")
         self.setMinimumSize(1200, 800)
+        
+        # Initialize animation manager
+        self.animation_manager = AnimationManager()
+        
         self.setup_ui()
         self.apply_neumorphic_style()
+        
+        # Start entrance animations
+        QTimer.singleShot(100, self.start_entrance_animations)
         
     def setup_ui(self):
         """Setup the main user interface"""
@@ -82,6 +90,11 @@ class MainWindow(QMainWindow):
         create_btn = QPushButton("➕ Create New VM")
         create_btn.setObjectName("create-vm-button")
         create_btn.clicked.connect(self.show_create_vm_dialog)
+        
+        # Add hover animation
+        create_btn.enterEvent = lambda e: self.animation_manager.spring_scale(create_btn, 1.02, 200)
+        create_btn.leaveEvent = lambda e: self.animation_manager.spring_scale(create_btn, 1.0, 200)
+        
         layout.addWidget(create_btn)
         
         return sidebar
@@ -237,7 +250,39 @@ class MainWindow(QMainWindow):
         dialog = CreateVMDialog(self)
         dialog.exec()
         
+    def start_entrance_animations(self):
+        """Start entrance animations for the UI"""
+        # Fade in the main window
+        self.setWindowOpacity(0.0)
+        self.animation_manager.fade_in(self, 800)
+        
+        # Stagger animate sidebar buttons
+        sidebar = self.findChild(QFrame, "sidebar")
+        if sidebar:
+            self.animation_manager.stagger_children(sidebar, "slide_in", 150)
+            
+        # Animate welcome section
+        welcome = self.findChild(QFrame, "welcome-section")
+        if welcome:
+            QTimer.singleShot(300, lambda: self.animation_manager.slide_in(welcome, "up", 600))
+            
+        # Animate quick actions
+        actions = self.findChild(QFrame, "quick-actions")
+        if actions:
+            QTimer.singleShot(500, lambda: self.animation_manager.slide_in(actions, "up", 600))
+            
+        # Animate VM section
+        vm_section = self.findChild(QFrame, "vm-section")
+        if vm_section:
+            QTimer.singleShot(700, lambda: self.animation_manager.slide_in(vm_section, "up", 600))
+            
     def handle_quick_action(self, action):
         """Handle quick action button clicks"""
         print(f"Quick action: {action}")
+        
+        # Add bounce animation to the clicked button
+        sender = self.sender()
+        if sender:
+            self.animation_manager.bounce(sender, 0.1, 400)
+            
         # TODO: Implement quick actions 

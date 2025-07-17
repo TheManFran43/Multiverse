@@ -123,7 +123,7 @@ class NectarOSTemplate:
         
     def get_installation_script(self):
         """Get the installation script for NectarOS"""
-        return """
+        return r"""
 #!/bin/bash
 # NectarOS Installation Script
 

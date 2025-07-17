@@ -6,8 +6,10 @@ from PyQt6.QtWidgets import (
     QFrame, QVBoxLayout, QHBoxLayout, QLabel, 
     QPushButton, QProgressBar
 )
-from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtCore import Qt, pyqtSignal, QTimer
 from PyQt6.QtGui import QFont
+
+from utils.animation_manager import AnimationManager
 
 
 class VMCard(QFrame):
@@ -21,8 +23,12 @@ class VMCard(QFrame):
     def __init__(self, vm_data):
         super().__init__()
         self.vm_data = vm_data
+        self.animation_manager = AnimationManager()
         self.setup_ui()
         self.apply_style()
+        
+        # Add hover animations
+        self.setup_animations()
         
     def setup_ui(self):
         """Setup the VM card interface"""
@@ -192,4 +198,28 @@ class VMCard(QFrame):
             border-color: #4a9eff;
         }
         """
-        self.setStyleSheet(style) 
+        self.setStyleSheet(style)
+        
+    def setup_animations(self):
+        """Setup hover and click animations"""
+        # Add hover effect
+        self.enterEvent = self.on_enter
+        self.leaveEvent = self.on_leave
+        
+        # Add click animations to buttons
+        for button in self.findChildren(QPushButton):
+            button.clicked.connect(self.on_button_click)
+            
+    def on_enter(self, event):
+        """Handle mouse enter event"""
+        self.animation_manager.spring_scale(self, 1.02, 200)
+        
+    def on_leave(self, event):
+        """Handle mouse leave event"""
+        self.animation_manager.spring_scale(self, 1.0, 200)
+        
+    def on_button_click(self):
+        """Handle button click with animation"""
+        sender = self.sender()
+        if sender:
+            self.animation_manager.bounce(sender, 0.15, 300) 
